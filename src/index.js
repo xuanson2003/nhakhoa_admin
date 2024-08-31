@@ -1,17 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// css
+import '~/Assets/css/demo.css';
+import '~/Assets/css/demo.css.map';
+import '~/Assets/css/fonts.css';
+import '~/Assets/css/fonts.min.css';
+import '~/Assets/css/kaiadmin.css';
+import '~/Assets/css/kaiadmin.css.map';
+import '~/Assets/css/plugins.css';
+import '~/Assets/css/plugins.css.map';
+import '~/Assets/css/plugins.min.css';
+import '~/Assets/css/bootstrap.min.css';
+import '~/Assets/css/kaiadmin.min.css';
+
+// base css
+import '~/Style/_base.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

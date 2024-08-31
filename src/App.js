@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { publicRoutes } from './Routes/routes';
 import './App.css';
+import Sidebar from './Layouts/Sidebar/Sidebar';
+import Header from './Layouts/Header/Header';
+import Footer from './Layouts/Footer/Footer';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="wrapper">
+            <BrowserRouter>
+                <Routes>
+                    {publicRoutes.map((item, index) => {
+                        if (item.layout === null) {
+                            return <Route key={index} path={item.path} element={item.component} />;
+                        }
+                        return (
+                            <Route
+                                key={index}
+                                path={item.path}
+                                element={
+                                    <>
+                                        <Sidebar />
+                                        <div className="main-panel">
+                                            <Header />
+                                            <div className="container">
+                                                <div className="page-inner">{item.component}</div>
+                                            </div>
+                                            <Footer />
+                                        </div>
+                                    </>
+                                }
+                            />
+                        );
+                    })}
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;

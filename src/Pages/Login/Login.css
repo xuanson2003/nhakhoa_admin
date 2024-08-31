@@ -1,0 +1,186 @@
+button {
+    border: none;
+}
+button {
+    border: none;
+}
+.login,
+.signup {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('https://www.the-dentist.co.uk/media/snznvdd4/university-invests-32-million-to-create-a-state-of-the-art-dental-clinic-the-dentist.jpg?width=1002&height=564&bgcolor=White&v=1da584637c9ad90')
+        no-repeat center center !important;
+    background-size: cover !important;
+    position: relative;
+}
+.login::before,
+.signup::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .6);
+}
+.login h3,
+.signup h3 {
+    text-align: center;
+    margin: -16px 0 20px;
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.login-container,
+.sign-container {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    z-index: 10;
+}
+
+.login-form,
+.sign-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-form h2,
+.sign-form h2 {
+    font-weight: 700;
+    font-size: 28px;
+    margin: 12px 0 28px;
+}
+
+.login-form-fields {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-form-field {
+    width: 100%;
+    padding-bottom: 20px;
+}
+.login-form-field input {
+    width: 100%;
+    border-radius: 2px;
+    outline: none;
+    padding: 11px 14px;
+    border: 1px solid #c9c9c9;
+    font-size: 16px;
+    font-weight: 500;
+}
+.login-form-field p {
+    color: red;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 2px 0 0 2px;
+}
+.login-form-field .error {
+    border-color: red;
+    background-color: #ffe7e8;
+}
+
+.login-form-field-group {
+    position: relative;
+    width: 100%;
+}
+.login-form-field-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.login-form-forgot-password {
+    margin-bottom: 20px;
+}
+.login-form-forgot-password a {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.login-form-button {
+    width: 100%;
+    display: flex;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.login-form-register-link {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 12px 0;
+}
+
+.login-form-or-separator {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 4px 0 16px;
+}
+.login-form-or-separator hr {
+    flex: 1;
+}
+.login-form-or-separator span {
+    margin: 0 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.login-form-with-google-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.26);
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 2px;
+}
+.login-form-with-google-button:active {
+    background-color: #f2f2f2;
+}
+
+.login-form-white-google-icon {
+    background-position: 83.92857142857143% 5.154639175257732%;
+    background-size: 722.2222222222222% 638.8888888888889%;
+    background-image: url(https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/7ffa33c1e9518f30.png);
+    height: 22px;
+    width: 22px;
+}
+
+@media (max-width: 400px) {
+    .login-container,
+    .sign-container {
+        border-radius: 0px;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+}
