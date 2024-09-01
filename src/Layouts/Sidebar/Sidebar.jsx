@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { faAddressBook, faNotesMedical, faUserDoctor } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '~/Assets/img/logo.png';
-import bg from '~/Assets/img/dental_clinic_bg.jpg';
 import './Sidebar.css';
 import config from '~/Config';
 

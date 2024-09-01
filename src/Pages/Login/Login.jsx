@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import { AdminContext } from '~/Context/AdminContext';
 import config from '~/Config';
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import request from '~/Utils/httpRequest';
-import storage from '~/Utils/storage';
 
 const Login = () => {
+    const { HandleLogin } = useContext(AdminContext);
+    const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const formik = useFormik({
@@ -24,19 +25,13 @@ const Login = () => {
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {
-                const response = await request.post('login', values);
-
-                const responseData = response.data;
-
-                if (responseData.success) {
-                    storage.set(responseData.token);
-                    window.location.replace('/');
-                } else {
-                    if (responseData.errorField === 'email') {
-                        setErrors({ email: 'Email này chưa được đăng ký' });
-                    } else if (responseData.errorField === 'password') {
-                        setErrors({ password: 'Mật khẩu không chính xác' });
-                    }
+                const result = await HandleLogin(values);
+                if (result.success) {
+                    navigate(config.routes.dashbroad);
+                } else if (result.error_field === 'email') {
+                    setErrors({ email: 'Email này chưa được đăng ký' });
+                } else if (result.error_field === 'password') {
+                    setErrors({ password: 'Mật khẩu không chính xác' });
                 }
             } catch (error) {
                 setErrors({ submit: 'Đăng nhập thất bại. Vui lòng thử lại sau.' });

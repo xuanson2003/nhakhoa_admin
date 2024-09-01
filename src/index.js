@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AdminContextProvider } from './Context/AdminContext';
+
 // css
 import '~/Assets/css/demo.css';
 import '~/Assets/css/demo.css.map';
@@ -16,13 +18,15 @@ import '~/Assets/css/bootstrap.min.css';
 import '~/Assets/css/kaiadmin.min.css';
 
 // base css
-import '~/Style/_base.css'
+import '~/Style/_base.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <AdminContextProvider>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </AdminContextProvider>,
 );
 
 reportWebVitals();

@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AdminContext } from '~/Context/AdminContext';
+
 import logo from '~/Assets/img/logo.png';
 import jmDenis from '~/Assets/img/jm_denis.jpg';
-import profile from '~/Assets/img/profile.jpg';
-import { Link } from 'react-router-dom';
 import config from '~/Config';
+import { useNavigate } from 'react-router-dom';
+import storage from '~/Utils/storage';
 
 function Header() {
+    const { user, setUser } = useContext(AdminContext);
+    const navigate = useNavigate();
+
+    function handlerLogout() {
+        storage.remove();
+        setUser({});
+        navigate(config.routes.login_2);
+    }
+
     return (
         <div className="main-header">
             <div className="main-header-logo">
@@ -265,10 +276,12 @@ function Header() {
                                 aria-expanded="false"
                             >
                                 <div className="avatar-sm">
-                                    <img src={profile} alt="..." className="avatar-img rounded-circle" />
+                                    <img src={user.image} alt="..." className="avatar-img rounded-circle" />
                                 </div>
                                 <span className="profile-username">
-                                    <span className="fw-bold">Xuân Sơn</span>
+                                    <span className="fw-bold">
+                                        {user.last_name} {user.first_name}
+                                    </span>
                                 </span>
                             </a>
                             <ul className="dropdown-menu dropdown-user animated fadeIn">
@@ -276,11 +289,17 @@ function Header() {
                                     <li>
                                         <div className="user-box">
                                             <div className="avatar-lg">
-                                                <img src={profile} alt="image profile" className="avatar-img rounded" />
+                                                <img
+                                                    src={user.image}
+                                                    alt="image profile"
+                                                    className="avatar-img rounded"
+                                                />
                                             </div>
                                             <div className="u-text">
-                                                <h4>Xuân Sơn</h4>
-                                                <p className="text-muted">xuanson@example.com</p>
+                                                <h4>
+                                                    {user.last_name} {user.first_name}
+                                                </h4>
+                                                <p className="text-muted">{user.email}</p>
                                                 <a href="profile.html" className="btn btn-xs btn-secondary btn-sm">
                                                     Xem hồ sơ
                                                 </a>
@@ -303,8 +322,14 @@ function Header() {
                                             Thiết lập tài khoản
                                         </a>
                                         <div className="dropdown-divider"></div>
-                                        <Link to={config.routes.login} className="dropdown-item">Đăng xuất
-                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                handlerLogout();
+                                            }}
+                                            className="dropdown-item"
+                                        >
+                                            Đăng xuất
+                                        </button>
                                     </li>
                                 </div>
                             </ul>
