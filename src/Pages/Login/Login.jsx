@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import { AdminContext } from '~/Context/AdminContext';
 import config from '~/Config';
-import './Login.css';
+import styles from './Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 
@@ -32,6 +32,8 @@ const Login = () => {
                     setErrors({ email: 'Email này chưa được đăng ký' });
                 } else if (result.error_field === 'password') {
                     setErrors({ password: 'Mật khẩu không chính xác' });
+                } else if (result.error_field === 'is_active') {
+                    setErrors({ email: 'Tài khoản đang chờ duyệt' });
                 }
             } catch (error) {
                 setErrors({ submit: 'Đăng nhập thất bại. Vui lòng thử lại sau.' });
@@ -42,15 +44,15 @@ const Login = () => {
     });
 
     return (
-        <div className="login">
-            <div className="login-container">
-                <form className="login-form" onSubmit={formik.handleSubmit}>
+        <div className={styles.login}>
+            <div className={styles['login-container']}>
+                <form className={styles['login-form']} onSubmit={formik.handleSubmit}>
                     <h2>Đăng nhập</h2>
                     {formik.errors.submit && <h3>{formik.errors.submit}</h3>}
-                    <div className="login-form-fields">
-                        <div className="login-form-field">
+                    <div className={styles['login-form-fields']}>
+                        <div className={styles['login-form-field']}>
                             <input
-                                className={formik.touched.email && formik.errors.email ? 'error' : ''}
+                                className={formik.touched.email && formik.errors.email ? styles.error : ''}
                                 name="email"
                                 type="email"
                                 placeholder="Email"
@@ -59,13 +61,13 @@ const Login = () => {
                                 value={formik.values.email}
                             />
                             {formik.touched.email && formik.errors.email ? (
-                                <p className="login-form-field-error">{formik.errors.email}</p>
+                                <p className={styles['login-form-field-error']}>{formik.errors.email}</p>
                             ) : null}
                         </div>
-                        <div className="login-form-field">
-                            <div className="login-form-field-group">
+                        <div className={styles['login-form-field']}>
+                            <div className={styles['login-form-field-group']}>
                                 <input
-                                    className={formik.touched.password && formik.errors.password ? 'error' : ''}
+                                    className={formik.touched.password && formik.errors.password ? styles.error : ''}
                                     name="password"
                                     type={passwordVisible ? 'text' : 'password'}
                                     placeholder="Mật khẩu"
@@ -76,29 +78,29 @@ const Login = () => {
                                 {passwordVisible ? (
                                     <FontAwesomeIcon
                                         onClick={() => setPasswordVisible(false)}
-                                        className="login-form-field-icon"
+                                        className={styles['login-form-field-icon']}
                                         icon={faEye}
                                     />
                                 ) : (
                                     <FontAwesomeIcon
                                         onClick={() => setPasswordVisible(true)}
-                                        className="login-form-field-icon"
+                                        className={styles['login-form-field-icon']}
                                         icon={faEyeSlash}
                                     />
                                 )}
                             </div>
                             {formik.touched.password && formik.errors.password ? (
-                                <p className="login-form-field-error">{formik.errors.password}</p>
+                                <p className={styles['login-form-field-error']}>{formik.errors.password}</p>
                             ) : null}
                         </div>
                     </div>
-                    <div className="login-form-forgot-password">
+                    <div className={styles['login-form-forgot-password']}>
                         <a href="/forgot-password">Bạn quên mật khẩu?</a>
                     </div>
-                    <button type="submit" className="login-form-button" disabled={formik.isSubmitting}>
+                    <button type="submit" className={styles['login-form-button']} disabled={formik.isSubmitting}>
                         Đăng nhập
                     </button>
-                    <div className="login-form-register-link">
+                    <div className={styles['login-form-register-link']}>
                         <span>
                             Bạn chưa có tài khoản? <Link to={config.routes.register}>Đăng ký</Link>
                         </span>

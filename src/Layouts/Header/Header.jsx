@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AdminContext } from '~/Context/AdminContext';
+import { Link } from 'react-router-dom';
 
 import logo from '~/Assets/img/logo.png';
 import jmDenis from '~/Assets/img/jm_denis.jpg';
@@ -300,17 +301,20 @@ function Header() {
                                                     {user.last_name} {user.first_name}
                                                 </h4>
                                                 <p className="text-muted">{user.email}</p>
-                                                <a href="profile.html" className="btn btn-xs btn-secondary btn-sm">
+                                                <Link
+                                                    to={config.routes.profile}
+                                                    className="btn btn-xs btn-secondary btn-sm"
+                                                >
                                                     Xem hồ sơ
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">
+                                        <Link to={config.routes.profile} className="dropdown-item">
                                             Hồ sơ
-                                        </a>
+                                        </Link>
                                         <a className="dropdown-item" href="#">
                                             Doanh thu
                                         </a>
@@ -318,9 +322,9 @@ function Header() {
                                             Hộp thư
                                         </a>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">
+                                        <Link to={config.routes.profile} className="dropdown-item">
                                             Thiết lập tài khoản
-                                        </a>
+                                        </Link>
                                         <div className="dropdown-divider"></div>
                                         <button
                                             onClick={() => {

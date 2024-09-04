@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { faAddressBook, faNotesMedical, faUserDoctor } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '~/Assets/img/logo.png';
@@ -7,6 +7,10 @@ import './Sidebar.css';
 import config from '~/Config';
 
 function Sidebar() {
+    const location = useLocation();
+    const getActiveClass = (path) => {
+        return location.pathname.startsWith(path) ? 'active' : '';
+    };
     return (
         <div className="sidebar" data-background-color="dark">
             {/* <img src={bg} alt="" className="sidebar-bg"/>
@@ -32,7 +36,7 @@ function Sidebar() {
             <div className="sidebar-wrapper scrollbar scrollbar-inner">
                 <div className="sidebar-content">
                     <ul className="nav nav-secondary">
-                        <li className="nav-item active">
+                        <li className="nav-item">
                             <a data-bs-toggle="collapse" href="#dashboard" className="collapsed" aria-expanded="false">
                                 <i className="fas fa-home"></i>
                                 <p>Dashboard</p>
@@ -40,7 +44,7 @@ function Sidebar() {
                             </a>
                             <div className="collapse" id="dashboard">
                                 <ul className="nav nav-collapse">
-                                    <li>
+                                    <li className={getActiveClass(`${config.routes.dashbroad}`)}>
                                         <Link to={config.routes.dashbroad}>
                                             <span className="sub-item">Trang chủ</span>
                                         </Link>
@@ -62,10 +66,10 @@ function Sidebar() {
                             </a>
                             <div className="collapse" id="patient">
                                 <ul className="nav nav-collapse">
-                                    <li>
-                                        <a href="components/avatars.html">
+                                    <li className={getActiveClass(`${config.routes.patient_list}`)}>
+                                        <Link to={config.routes.patient_list}>
                                             <span className="sub-item">Danh sách</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -78,15 +82,15 @@ function Sidebar() {
                             </a>
                             <div className="collapse" id="doctor">
                                 <ul className="nav nav-collapse">
-                                    <li>
-                                        <a href="components/avatars.html">
+                                    <li className={getActiveClass(`${config.routes.add_doctor}`)}>
+                                        <Link to={config.routes.add_doctor}>
                                             <span className="sub-item">Thêm mới</span>
-                                        </a>
+                                        </Link>
                                     </li>
-                                    <li>
-                                        <a href="components/avatars.html">
+                                    <li className={getActiveClass(`${config.routes.doctor_list}`)}>
+                                        <Link to={config.routes.doctor_list}>
                                             <span className="sub-item">Danh sách</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -99,15 +103,15 @@ function Sidebar() {
                             </a>
                             <div className="collapse" id="service">
                                 <ul className="nav nav-collapse">
-                                    <li>
-                                        <a href="components/avatars.html">
+                                    <li className={getActiveClass(`${config.routes.add_service}`)}>
+                                        <Link to={config.routes.add_service}>
                                             <span className="sub-item">Thêm mới</span>
-                                        </a>
+                                        </Link>
                                     </li>
-                                    <li>
-                                        <a href="components/avatars.html">
+                                    <li className={getActiveClass(`${config.routes.service_list}`)}>
+                                        <Link to={config.routes.service_list}>
                                             <span className="sub-item">Danh sách</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>

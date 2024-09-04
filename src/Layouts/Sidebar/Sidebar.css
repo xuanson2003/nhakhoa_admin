@@ -17,3 +17,24 @@
     height: auto;
     background-color: rgba(0, 0, 0, 0.8);
 }
+
+.nav-item:has(.nav-collapse .active) {
+    background: rgba(0, 0, 0, 0.16) !important;
+}
+.nav-item:has(.nav-collapse .active) > a::before {
+    background: #6861ce !important;
+    opacity: 1 !important;
+    position: absolute;
+    z-index: 1;
+    width: 2px;
+    height: 100%;
+    content: '';
+    left: 0;
+    top: 0;
+}
+.nav-item:has(.nav-collapse .active) a i {
+    color: #6861ce !important;
+}
+.nav-item:has(.nav-collapse .active) a p {
+    color: #fff !important;
+}

@@ -1,148 +1,167 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import Modal from 'react-modal';
 
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../Login/Login.css';
+import './Signup.css';
 import config from '~/Config';
-import request from '~/Utils/httpRequest';
-import storage from '~/Utils/storage';
+import ImageCropper from '~/Components/ImageCropper/ImageCropper';
+
+Modal.setAppElement('#root');
 
 function Register() {
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const cropperRef = useRef(null);
 
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        validationSchema: Yup.object({
-            name: Yup.string().required('Tên là bắt buộc'),
-            email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-            password: Yup.string()
-                .required('Mật khẩu là bắt buộc')
-                .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-                .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Mật khẩu phải bao gồm cả chữ và số'),
-            confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password'), null], 'Mật khẩu không khớp')
-                .required('Vui lòng nhập lại mật khẩu'),
-        }),
-        onSubmit: async (values, { setSubmitting, setErrors }) => {
-            try {
-                const { name, email, password } = values;
-                const response = await request.post('signup', { name, email, password });
-                const responseData = response.data;
 
-                if (responseData.success) {
-                    storage.set(responseData.token);
-                    window.location.replace('/');
-                } else if (responseData.errorField === 'email') {
-                    setErrors({ email: 'Email này đã được đăng ký' });
-                }
-            } catch (error) {
-                setErrors({ submit: 'Đăng ký thất bại, vui lòng thử lại sau' });
-            } finally {
-                setSubmitting(false);
-            }
-        },
-    });
+
+    const handleSubmit = async (event) => {
+        const croppedImageBlob = cropperRef.current.getCroppedImage();
+        if (croppedImageBlob) {
+            console.log(croppedImageBlob);
+            const formData = new FormData();
+            formData.append('image', croppedImageBlob, 'cropped-image.jpg');
+        }
+    };
 
     return (
         <div className="signup">
             <div className="sign-container">
-                <form className="login-form" onSubmit={formik.handleSubmit}>
-                    <h2>Đăng ký</h2>
-                    {formik.errors.submit && <h3>{formik.errors.submit}</h3>}
-                    <div className="login-form-fields">
-                        <div className="login-form-field">
-                            <input
-                                className={formik.touched.name && formik.errors.name ? 'error' : ''}
-                                name="name"
-                                placeholder="Nhập tên"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.name}
-                            />
-                            {formik.touched.name && formik.errors.name ? (
-                                <p className="login-form-field-error">{formik.errors.name}</p>
-                            ) : null}
-                        </div>
-
-                        <div className="login-form-field">
-                            <input
-                                className={formik.touched.email && formik.errors.email ? 'error' : ''}
-                                name="email"
-                                type="email"
-                                placeholder="Email"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.email}
-                            />
-                            {formik.touched.email && formik.touched.email ? (
-                                <p className="login-form-field-error">{formik.errors.email}</p>
-                            ) : null}
-                        </div>
-
-                        <div className="login-form-field">
-                            <input
-                                className={formik.touched.password && formik.errors.password ? 'error' : ''}
-                                name="password"
-                                type={passwordVisible ? 'text' : 'password'}
-                                placeholder="Mật khẩu"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.password}
-                            />
-                            {formik.touched.password && formik.errors.password ? (
-                                <p className="login-form-field-error">{formik.errors.password}</p>
-                            ) : null}
-                        </div>
-
-                        <div className="login-form-field">
-                            <div className="login-form-field-group">
-                                <input
-                                    className={
-                                        formik.touched.confirmPassword && formik.errors.confirmPassword ? 'error' : ''
-                                    }
-                                    name="confirmPassword"
-                                    type={passwordVisible ? 'text' : 'password'}
-                                    placeholder="Nhập lại mật khẩu"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.confirmPassword}
-                                />
-                                {passwordVisible ? (
-                                    <FontAwesomeIcon
-                                        onClick={() => {
-                                            setPasswordVisible(false);
-                                        }}
-                                        className="login-form-field-icon"
-                                        icon={faEye}
-                                    />
-                                ) : (
-                                    <FontAwesomeIcon
-                                        onClick={() => {
-                                            setPasswordVisible(true);
-                                        }}
-                                        className="login-form-field-icon"
-                                        icon={faEyeSlash}
-                                    />
-                                )}
+                <form className="login-form">
+                    {/* {formik.errors.submit && <h3>{formik.errors.submit}</h3>} */}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="login-form-field">
+                                <ImageCropper ref={cropperRef} aspectRatio={3 / 4} defaultImage={null} />
+                                <p className="login-form-field-error"></p>
                             </div>
-                            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                                <p className="login-form-field-error">{formik.errors.confirmPassword}</p>
-                            ) : null}
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <input type="email" name="email" placeholder="Email" />
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="login-form-field">
+                                <input type="text" name="first_name" placeholder="Nhập tên" />
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="login-form-field">
+                                <input type="text" name="last_name" placeholder="Nhập họ" />
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <div className="login-form-field-group">
+                                    <input
+                                        name="password"
+                                        type={passwordVisible ? 'text' : 'password'}
+                                        placeholder="Mật khẩu"
+                                    />
+                                    {passwordVisible ? (
+                                        <FontAwesomeIcon
+                                            onClick={() => setPasswordVisible(false)}
+                                            className="login-form-field-icon"
+                                            icon={faEye}
+                                        />
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            onClick={() => setPasswordVisible(true)}
+                                            className="login-form-field-icon"
+                                            icon={faEyeSlash}
+                                        />
+                                    )}
+                                </div>
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <div className="login-form-field-group">
+                                    <input
+                                        name="confirm_password"
+                                        type={passwordVisible ? 'text' : 'password'}
+                                        placeholder="Nhập lại mật khẩu"
+                                    />
+                                    {passwordVisible ? (
+                                        <FontAwesomeIcon
+                                            onClick={() => setPasswordVisible(false)}
+                                            className="login-form-field-icon"
+                                            icon={faEye}
+                                        />
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            onClick={() => setPasswordVisible(true)}
+                                            className="login-form-field-icon"
+                                            icon={faEyeSlash}
+                                        />
+                                    )}
+                                </div>
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <select name="position_id" id="">
+                                    <option value="">Chọn chức vụ</option>
+                                    <option value="1">Bác sĩ</option>
+                                    <option value="2">Nhân viên vệ sinh</option>
+                                </select>
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <div className="row mt-2">
+                                    <label className="col-md-3 d-flex align-items-center">
+                                        <input
+                                            style={{ width: '40px', height: '20px' }}
+                                            type="radio"
+                                            checked="checked"
+                                            name="gender"
+                                        />
+                                        <span style={{ fontSize: '16px' }}>Nam</span>
+                                    </label>
+                                    <label className="col-md-6 d-flex align-items-center">
+                                        <input style={{ width: '40px', height: '20px' }} type="radio" name="gender" />
+                                        <span style={{ fontSize: '16px' }}>Nữ</span>
+                                    </label>
+                                </div>
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <input type="number" name="phone" placeholder="Số điện thoại" />
+                                <p className="login-form-field-error"></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="login-form-field">
+                                <input type="text" name="address" placeholder="Địa chỉ" />
+                                <p className="login-form-field-error"></p>
+                            </div>
                         </div>
                     </div>
-                    <button className="login-form-button">Đăng ký</button>
+                    <div className="row w-100">
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleSubmit();
+                            }}
+                            className="login-form-button"
+                        >
+                            Đăng ký
+                        </button>
+                    </div>
                     <div className="login-form-register-link">
-                        <span>
-                            Bạn đã có tài khoản? <Link to={config.routes.login}>Đăng nhập</Link>
-                        </span>
+                        Bạn đã có tài khoản? <Link to={config.routes.login}>Đăng nhập</Link>
                     </div>
                 </form>
             </div>
